@@ -6,7 +6,7 @@ import { ObjectApp } from './app.component';
   template: `
     <div class="lifes lifes--parent">
       <div class="lifes__name">
-        <h2>Parent</h2>
+        <h2>Child</h2>
       </div>
       <br />
       <div class="lifes__name">

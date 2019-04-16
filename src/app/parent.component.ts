@@ -10,7 +10,7 @@ export interface ObjectApp {
     <div class="lifes-ctn">
       <div class="lifes lifes--grand-parent">
         <div class="lifes__name">
-          <h2>Grand parent</h2>
+          <h2>Parent</h2>
         </div>
         <div class="lifes__name">
           <button (click)="_updateState('primitive-set')">
@@ -48,7 +48,7 @@ export interface ObjectApp {
     </div>
     {{runChangeDetection}}
   `,
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush // TODO: active OnPush to see diference
 })
 export class ParentComponent {
   primitive = '1';
