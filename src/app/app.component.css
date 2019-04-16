@@ -1,0 +1,24 @@
+.lifes-ctn {
+  display: flex;
+}
+
+.lifes {
+  padding: 20px;
+}
+
+.lifes--grand-parent {
+  background: rgba(0, 90, 255, 0.3);
+}
+
+.lifes--parent {
+  background: rgba(255, 50, 36, 0.3);
+}
+
+.lifes__inner {
+  display: flex;
+}
+
+.lifes__inner > * {
+  padding: 10px;
+  border: 1px solid black;
+}
