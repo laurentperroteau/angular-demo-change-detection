@@ -1,54 +1,77 @@
-import { Component } from '@angular/core';
-
-let renderForce = 0;
-let primitiveCount = 1;
-let arrayOfObjectCount = 2;
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ObjectApp } from './app.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-child',
+  template: `
+    <div class="lifes lifes--parent">
+      <div class="lifes__name">
+        <h2>Parent</h2>
+      </div>
+      <br />
+      <div class="lifes__name">
+        <button (click)="_updateState('primitive-set')">
+          udpate primitive
+        </button>
+        <button (click)="_updateState('array-primitive-set')">
+          update array-primitive
+        </button>
+        <button (click)="_updateState('object-set')">
+          update object
+        </button>
+        <button (click)="_updateState('item-array-object-set')">
+          udpate item in array of object
+        </button>
+      </div>
+      <br />
+      <div class="lifes__inner">
+        <div>
+          <h3>this (props et state)</h3>
+          <pre class="layout__item u-1/2-lap-and-up">
+{{primitive}}
+{{arrayOfPrimitive | json}}
+{{object | json}}
+{{arrayOfObject | json}}
+          </pre>
+        </div>
+      </div>
+    </div>
+  {{runChangeDetection}}`,
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChildComponent {
-  newRender = false;
-  primitive = 'primitive-v' + primitiveCount;
-  arrayOfPrimitive = ['1', '2', '3'];
-  object = {
-    property: 'property-v1'
-  };
-  arrayOfObject = [
-    {
-      key: '1'
-    },
-    {
-      key: arrayOfObjectCount + ''
-    }
-  ];
+export class ChildComponent implements OnChanges {// TODO: renommer enfant
+  @Input() newRender = false;
+  @Input() primitive: string;
+  @Input() arrayOfPrimitive: string[];
+  @Input() object: ObjectApp;
+  @Input() arrayOfObject: ObjectApp[];
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes);
+  }
 
   _updateState(type: string) {
     switch (type) {
       case 'primitive-set':
-        primitiveCount++;
-        this.primitive = 'primitive-v' + primitiveCount;
+        this.primitive = +this.primitive.charAt(this.primitive.length - 1) + 1 + '';
         break;
+
       case 'array-primitive-set':
-        this.arrayOfPrimitive = this.arrayOfPrimitive.map(item => (+item) + 1 + '');
+        this.arrayOfPrimitive.push(+this.arrayOfPrimitive[this.arrayOfPrimitive.length - 1] + 1 + '');
+        break;
+
+      case 'object-set':
+        this.object.property = +this.object.property + 1 + '';
         break;
 
       case 'item-array-object-set':
-        arrayOfObjectCount++;
-        this.arrayOfObject[1].key = arrayOfObjectCount + '';
+        this.arrayOfObject[1].property = +this.arrayOfObject[1].property + 1 + '';
         break;
     }
   }
 
   get runChangeDetection() {
-    this.newRender = true;
-
-    setTimeout(() => {
-      this.newRender = false;
-    }, 1000);
-
-    return '';
+    console.log('Parent change detection');
+    return true;
   }
 }

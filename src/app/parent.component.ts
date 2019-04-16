@@ -1,56 +1,69 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ObjectApp } from './app.component';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
-let renderCount = 0;
+export interface ObjectApp {
+  property: string;
+}
 
 @Component({
   selector: 'app-parent',
   template: `
-    <div class="lifes lifes--parent">
-      <div class="lifes__name">
-        <h2>Parent</h2>
-      </div>
-      <br />
-      <div class="lifes__name">
-        <button (click)="_updateState('primitive-set')">
-          udpate primitive
-        </button>
-        <button (click)="_updateState('array-primitive-set')">
-          update array-primitive
-        </button>
-        <button (click)="_updateState('object-set')">
-          update object
-        </button>
-        <button (click)="_updateState('item-array-object-set')">
-          udpate item in array of object
-        </button>
-      </div>
-      <br />
-      <div class="lifes__inner">
-        <div>
-          <h3>this (props et state)</h3>
-          <pre class="layout__item u-1/2-lap-and-up">
+    <div class="lifes-ctn">
+      <div class="lifes lifes--grand-parent">
+        <div class="lifes__name">
+          <h2>Grand parent</h2>
+        </div>
+        <div class="lifes__name">
+          <button (click)="_updateState('primitive-set')">
+            udpate primitive
+          </button>
+          <button (click)="_updateState('array-primitive-set')">
+            update array-primitive
+          </button>
+          <button (click)="_updateState('object-set')">
+            update object
+          </button>
+          <button (click)="_updateState('item-array-object-set')">
+            udpate item in array of object
+          </button>
+        </div>
+        <br />
+        <div class="lifes__inner">
+          <div>
+            <h3>this (props et state)</h3>
+            <pre class="layout__item u-1/2-lap-and-up">
 {{primitive}}
-{{arrayOfPrimitive | json}}
-{{object | json}}
-{{arrayOfObject | json}}
-          </pre>
+              {{arrayOfPrimitive | json }}
+              {{object | json}}
+              {{arrayOfObject | json}}
+</pre>
+          </div>
         </div>
       </div>
+      <app-child
+        [primitive]="primitive"
+        [arrayOfPrimitive]="arrayOfPrimitive"
+        [object]="object"
+        [arrayOfObject]="arrayOfObject"
+      ></app-child>
     </div>
-  {{runChangeDetection}}`,
+    {{runChangeDetection}}
+  `,
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ParentComponent implements OnChanges {// TODO: renommer enfant
-  @Input() newRender = false;
-  @Input() primitive: string;
-  @Input() arrayOfPrimitive: string[];
-  @Input() object: ObjectApp;
-  @Input() arrayOfObject: ObjectApp[];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes);
-  }
+export class ParentComponent {
+  primitive = '1';
+  arrayOfPrimitive = ['1', '2', '3'];
+  object: ObjectApp = {
+    property: '1'
+  };
+  arrayOfObject: ObjectApp[] = [
+    {
+      property: '1'
+    },
+    {
+      property: '2'
+    }
+  ];
 
   _updateState(type: string) {
     switch (type) {
@@ -73,7 +86,7 @@ export class ParentComponent implements OnChanges {// TODO: renommer enfant
   }
 
   get runChangeDetection() {
-    console.log('Parent change detection');
+    console.log('App change detection');
     return true;
   }
 }
